@@ -1,6 +1,6 @@
 // classe de animação dos sprites
 class Animacao {
-    constructor (matriz, imagem, x, largura, altura, larguraSprite, alturaSprite){
+    constructor (matriz, imagem, x, variacaoY, largura, altura, larguraSprite, alturaSprite){
         this.matriz = matriz;
         this.imagem = imagem;
         this.largura = largura;
@@ -8,7 +8,8 @@ class Animacao {
         this.larguraSprite = larguraSprite;
         this.alturaSprite = alturaSprite;
         this.x = x;
-        this.y = height - this.altura; // bottom da tela
+        this.variacaoY = variacaoY;
+        this.y = height - this.altura - this.variacaoY; // bottom da tela
         this.frameAtual = 0;
     }
 
