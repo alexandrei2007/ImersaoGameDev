@@ -1,27 +1,50 @@
-class Personagem {
-    constructor (img) {
-      this.img = img;
-      this.matriz = [
-        [0, 0], [220, 0], [440, 0], [660, 0],
-        [0, 270], [220, 270], [440, 270], [660, 270],
-        [0, 540], [220, 540], [440, 540], [660, 540],
-        [0, 810], [220, 810], [440, 810], [660, 810]
-      ];
-      this.frameAtual = 0;
+class Personagem extends Animacao {
+    constructor (matriz, imagem, x, largura, altura, larguraSprite, alturaSprite, somDoPulo) {
+        super(matriz, imagem, x, largura, altura, larguraSprite, alturaSprite);
+        this.yInicial = height - this.altura; // bottom da tela
+        this.y = this.yInicial;        
+        this.velocidadeDoPulo = 0;
+        this.gravidade = 3;
+        this.jumpCount = 0;
+        this.maxJumps = 3;
+        this.somDoPulo = somDoPulo;
+    }
+
+    pula() {
+        
+        if (this.jumpCount >= this.maxJumps)
+            return;
+        
+        this.velocidadeDoPulo = -30;        
+        this.jumpCount++;
+        this.somDoPulo.play();
+    }
+
+    aplicaGravidade() {
+        this.y = this.y + this.velocidadeDoPulo
+        this.velocidadeDoPulo = this.velocidadeDoPulo + this.gravidade
+        
+        if (this.y > this.yInicial)
+        {
+            this.y = this.yInicial;
+            this.jumpCount = 0;
+        }
     }
     
-    exibe() {
-      let x = this.matriz[this.frameAtual][0];
-      let y = this.matriz[this.frameAtual][1];
-      image(this.img, 0, height - 150, 110, 135, x, y, 220, 270);
-      this.anima();
-    }
-    
-    anima() {
-      this.frameAtual++;
-      if (this.frameAtual >= this.matriz.length - 1) {
-        this.frameAtual = 0;
-          }
-    }
-    
+    estaColidindo(inimigo) {
+        const precisao = .7;
+        const colisao = collideRectRect(
+          this.x, 
+          this.y, 
+          this.largura * precisao, 
+          this.altura * precisao,
+          inimigo.x,
+          inimigo.y,
+          inimigo.largura * precisao,
+          inimigo.altura * precisao
+        );
+        
+        return colisao;
+      }
+
   }
